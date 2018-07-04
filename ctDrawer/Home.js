@@ -36,6 +36,7 @@ export default class Page1 extends Component {
                     </View>
                     <View style={{justifyContent:'center',flexDirection:'row',marginTop:30,marginBottom:10}}>
                         <Text style={{fontSize:25,fontWeight:'400'}}> ค้นหาพรรณไม้ </Text>
+                        <Text>Test</Text>
                     </View>
                     <Item rounded
                           style={{backgroundColor:'white',margin:20,marginLeft:20}}>
