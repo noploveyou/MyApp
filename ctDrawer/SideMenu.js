@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View, TouchableHighlight,Image,StyleSheet} from 'react-native';
-
+import {List, ListItem,Icon,Left,Right} from 'native-base';
 
 class SideMenu extends Component {
 
@@ -22,6 +22,21 @@ class SideMenu extends Component {
         }
     }
 
+    Btn1 =()=>{
+            this.props.navigation.navigate('Home'),
+            this.setState({pressedBtn1: true,pressedBtn2: false,pressedBtn3: false})
+    }
+
+    Btn2 = ()=>{
+            this.props.navigation.navigate('ListTree'),
+            this.setState({pressedBtn2: true,pressedBtn1: false,pressedBtn3: false})
+    }
+
+    Btn3 = ()=>{
+            this.props.navigation.navigate('Map'),
+            this.setState({pressedBtn3: true,pressedBtn1: false,pressedBtn2: false})
+    }
+
     render () {
         return (
 
@@ -33,52 +48,37 @@ class SideMenu extends Component {
                     <Text style={{fontSize:18,color:'white'}}> มหาวิทยาลัยราชภัฏพระนคร </Text>
                 </View >
                     <View >
-                        <View style={{backgroundColor:'#FEF9E7',borderBottomWidth:0.3}}>
-                            <TouchableHighlight
-                                style={[styles.button, this.state.pressedBtn1 ? {backgroundColor:'#F1C40F'} : {}]}
-                                onPress={this.navigateToScreen('Home')}
-                                onShowUnderlay={()=>{this.setState({pressedBtn1: true})}}
-                                onHideUnderlay={()=>{this.setState({pressedBtn2: false,pressedBtn3: false})}}>
-                                <Text style={{marginLeft:10,fontWeight:'400',fontSize:20}}> หน้าหลัก </Text>
-                            </TouchableHighlight>
-                        </View>
 
-                        <View style={{backgroundColor:'#FCF3CF',borderBottomWidth:0.3}}>
-                            <TouchableHighlight
-                                onPress={this.navigateToScreen('ListTree')}
-                                style={[styles.button, this.state.pressedBtn2 ? {backgroundColor:'#F1C40F'} : {}]}
-                                onShowUnderlay={()=>{this.setState({pressedBtn2: true})}}
-                                onHideUnderlay={()=>{this.setState({pressedBtn1: false,pressedBtn3: false})}}
-                            >
-                                <Text style={{marginLeft:10,fontWeight:'400',fontSize:20}}> รายชื่อพรรณไม้ </Text>
-                            </TouchableHighlight>
-                        </View>
-                        <View  style={{backgroundColor:'#FCF3CF',borderBottomWidth:0.3}}>
-                            <TouchableHighlight
-                                onPress={this.navigateToScreen('Map')}
-                                style={[styles.button, this.state.pressedBtn3 ? {backgroundColor:'#F1C40F'} : {}]}
-                                onShowUnderlay={()=>{this.setState({pressedBtn3: true})}}
-                                onHideUnderlay={()=>{this.setState({pressedBtn1: false,pressedBtn2: false})}}
-                            >
-                                <Text style={{marginLeft:10,fontWeight:'400',fontSize:20}}> แผนที่พรรณไม้ </Text>
-                            </TouchableHighlight>
-                        </View>
 
-                        <View  style={{backgroundColor:'#FCF3CF',borderBottomWidth:0.3}}>
-                            <TouchableHighlight
-                                style={styles.button}
-                            >
-                                <Text style={{marginLeft:10,fontWeight:'400',fontSize:20}}> Page 4 </Text>
-                            </TouchableHighlight>
-                        </View>
-
-                        <View  style={{backgroundColor:'#FCF3CF',borderBottomWidth:0.3}}>
-                            <TouchableHighlight
-                                style={styles.button}
-                            >
-                                <Text style={{marginLeft:10,fontWeight:'400',fontSize:20}}> Page 5 </Text>
-                            </TouchableHighlight>
-                        </View>
+                        <List>
+                            <ListItem noIndent style={[styles.button, this.state.pressedBtn1 ? {backgroundColor:'#F1C40F'} : {}]}
+                                      onPress={this.Btn1}>
+                                <Left>
+                                    <Text style={{fontWeight:'400',fontSize:18}}> หน้าหลัก </Text>
+                                </Left>
+                                <Right>
+                                    <Icon name="arrow-forward" style={{color:'black'}}/>
+                                </Right>
+                            </ListItem>
+                            <ListItem noIndent style={[styles.button, this.state.pressedBtn2 ? {backgroundColor:'#F1C40F'} : {}]}
+                                      onPress={this.Btn2}>
+                                <Left>
+                                    <Text style={{fontWeight:'400',fontSize:18}}> รายชื่อพรรณไม้ </Text>
+                                </Left>
+                                <Right>
+                                    <Icon name="arrow-forward" style={{color:'black'}}/>
+                                </Right>
+                            </ListItem>
+                            <ListItem noIndent style={[styles.button, this.state.pressedBtn3 ? {backgroundColor:'#F1C40F'} : {}]}
+                                      onPress={this.Btn3}>
+                                <Left>
+                                    <Text style={{fontWeight:'400',fontSize:18}}> แผนที่พรรณไม้ </Text>
+                                </Left>
+                                <Right>
+                                    <Icon name="arrow-forward" style={{color:'black'}}/>
+                                </Right>
+                            </ListItem>
+                        </List>
 
                     </View>
                 </ScrollView>
