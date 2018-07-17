@@ -1,35 +1,35 @@
 import React, { Component } from 'react';
 import { Container, Header, Left, Body, Right, Button, Icon, Title ,
-    List, ListItem, Content, Text, Thumbnail, icon ,View,Input,Item} from 'native-base';
+         Content, Text, icon ,View,Input,Item} from 'native-base';
 import { FlatList, ActivityIndicator,TouchableHighlight} from 'react-native';
+import axios from 'axios';
 
 export default class Page2 extends Component {
-
     constructor(props) {
         super(props);
-        this.state = {text: ''};
-        this.state = {selected: (new Map(): Map<string, boolean>)};
+        this.state = {
+            text: '',
+            selected: (new Map(): Map<string, boolean>),
+            isLoading: true,
+        };
     }
 
     componentDidMount(){
-        return fetch('http://192.168.1.22/DBCheck.php')
-            .then((response) => response.json())
-            .then((responseJson) => {
-
+         axios.get('http://192.168.1.22/DBCheck.php')
+            .then((response) => {
                 this.setState({
-                    isLoading: false,
-                    dataSource: responseJson,
-                }, function(){
-
-                });
-
+                   dataSource: response.data,
+                   isLoading: false,
+               });
             })
-            .catch((error) =>{
-                console.error(error);
-            });
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+
     }
 
-    _keyExtractor = (item, index) => item.id;
+    _keyExtractor = (item,index) => item.plantID;
 
     _onPressItem = (id: string) => {
         // updater functions are preferred for transactional updates
@@ -41,26 +41,30 @@ export default class Page2 extends Component {
         });
     };
 
-    _renderItem = ({item}) => (
-        <MyListItem
-            id={item.plantID}
-            onPressItem={this._onPressItem}
-            selected={!!this.state.selected.get(item.plantID)}
-            title={item.plantName}
-            titleEN={item.plantScience}
-        />
-    );
+    _renderItem = ({item}) => {
+        return (
+            <MyListItem
+                id={item.plantID}
+                onPressItem={this._onPressItem}
+                selected={!!this.state.selected.get(item.plantID)}
+                TreeName={item.plantName}
+                TreeNameEN={item.plantScience}
+            />
+        );
+    };
 
     clearText(){
         this.setState({text:''})
     }
 
     render() {
-
         if(this.state.isLoading){
             return(
-                <View style={{flex: 1, padding: 20}}>
-                    <ActivityIndicator/>
+                <View style={{flex: 1, alignItems:'center',flexDirection:'row',justifyContent:'center'}}>
+                    <View>
+                        <ActivityIndicator size="large" color="green"/>
+                        <Text style={{fontSize:30}}> กำลังโหลด กรุณารอสักครู่ </Text>
+                    </View>
                 </View>
             )
         }
@@ -73,31 +77,30 @@ export default class Page2 extends Component {
                         </Button>
                     </Left>
                     <Body>
-                    <Title> รายชื่อพรรณไม้ </Title>
+                        <Title> รายชื่อพรรณไม้ </Title>
                     </Body>
                     <Right>
                     </Right>
                 </Header>
-
-                    <Item >
-                        <View style={{flex:1,flexDirection:'row',justifyContent:'center'}}>
-                            <Input placeholder="Search In Here"
-                                   placeholderTextColor='#D5D8DC'
-                                   returnKeyType = {"done"}
-                                onChangeText={(value) => {this.setState({text:value})}}
-                                value={this.state.text}
+                    <Item>
+                        <View style={{flex: 1,flexDirection: 'row',justifyContent: 'center'}}>
+                            <Input placeholder= "Search In Here"
+                                   placeholderTextColor = '#D5D8DC'
+                                   returnKeyType={"done"}
+                                   onChangeText={(value) => {this.setState({text: value})}}
+                                   value={this.state.text}
                             />
                         </View>
                         <View>
-                            <Icon name='close' style={{fontSize: 25, color: 'red',marginRight:15}}
-                                  onPress={()=>{this.clearText()}}
+                            <Icon name='close' style={{fontSize: 25, color: 'red',marginRight: 15}}
+                                  onPress={() => {this.clearText()}}
                             />
                         </View>
                     </Item>
                 <Content>
                     <FlatList
                         data={this.state.dataSource}
-                        extraData={this.state}
+                        /*extraData={this.state}*/
                         keyExtractor={this._keyExtractor}
                         renderItem={this._renderItem}
                     />
@@ -110,7 +113,7 @@ export default class Page2 extends Component {
 class MyListItem extends React.PureComponent {
     _onPress = () => {
         this.props.onPressItem(this.props.id);
-        alert(this.props.title);
+        /*alert(this.props.id);*/
     };
 
     render() {
@@ -119,10 +122,10 @@ class MyListItem extends React.PureComponent {
             <TouchableHighlight onPress={this._onPress}>
                 <View style={{borderBottomWidth:1}}>
                     <Text style={{ color: 'black' }}>
-                        {this.props.title}
+                        {this.props.TreeName}
                     </Text>
                     <Text style={{ color: 'black' }}>
-                        {this.props.titleEN}
+                        {this.props.TreeNameEN}
                     </Text>
                 </View>
             </TouchableHighlight>
