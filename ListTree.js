@@ -1,35 +1,69 @@
 import React, { Component } from 'react';
 import { Container, Header, Left, Body, Right, Button, Icon, Title ,
     List, ListItem, Content, Text, Thumbnail, icon ,View,Input,Item} from 'native-base';
-import {TextInput} from 'react-native';
-
-var tree = ['Simon Mignolet','Nathaniel Clyne','Dejan Lovren','Mama Sakho','Emre Can'
-    ,'Simon Mignolet','Nathaniel Clyne','Dejan Lovren','Mama Sakho','Emre Can'];
+import { FlatList, ActivityIndicator,TouchableHighlight} from 'react-native';
 
 export default class Page2 extends Component {
 
     constructor(props) {
         super(props);
         this.state = {text: ''};
+        this.state = {selected: (new Map(): Map<string, boolean>)};
     }
 
-    /*filterSearch(text){
-        const newData = tree.filter(function (item) {
-            const itemData = item.tree.toUpperCase();
-            const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1
+    componentDidMount(){
+        return fetch('http://192.168.1.22/DBCheck.php')
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+                this.setState({
+                    isLoading: false,
+                    dataSource: responseJson,
+                }, function(){
+
+                });
+
+            })
+            .catch((error) =>{
+                console.error(error);
+            });
+    }
+
+    _keyExtractor = (item, index) => item.id;
+
+    _onPressItem = (id: string) => {
+        // updater functions are preferred for transactional updates
+        this.setState((state) => {
+            // copy the map rather than modifying state.
+            const selected = new Map(state.selected);
+            selected.set(id, !selected.get(id)); // toggle
+            return {selected};
         });
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(newData),
-            text: text
-        })
-    }*/
+    };
+
+    _renderItem = ({item}) => (
+        <MyListItem
+            id={item.plantID}
+            onPressItem={this._onPressItem}
+            selected={!!this.state.selected.get(item.plantID)}
+            title={item.plantName}
+            titleEN={item.plantScience}
+        />
+    );
 
     clearText(){
         this.setState({text:''})
     }
 
     render() {
+
+        if(this.state.isLoading){
+            return(
+                <View style={{flex: 1, padding: 20}}>
+                    <ActivityIndicator/>
+                </View>
+            )
+        }
         return (
             <Container>
                 <Header style={{backgroundColor:'#196F3D'}}>
@@ -50,7 +84,7 @@ export default class Page2 extends Component {
                             <Input placeholder="Search In Here"
                                    placeholderTextColor='#D5D8DC'
                                    returnKeyType = {"done"}
-                                onChangeText={(value) => {this.setState({text: value})}}
+                                onChangeText={(value) => {this.setState({text:value})}}
                                 value={this.state.text}
                             />
                         </View>
@@ -61,23 +95,37 @@ export default class Page2 extends Component {
                         </View>
                     </Item>
                 <Content>
-                    <List dataArray={tree}
-                          renderRow={(item) =>
-                              <ListItem avatar
-                                        onPress={()=>{alert(item.toString())}}
-                              >
-                                  <Left>
-                                      <Thumbnail source={{ uri: 'http://www.avocat-sabrina-rouzes.fr/wp-content/uploads/2017/02/arbre.jpg' }} />
-                                  </Left>
-                                  <Body>
-                                    <Text >{item}</Text>
-                                  <Text note>Doing what you like will always keep you happy . .</Text>
-                                  </Body>
-                              </ListItem>
-                          }>
-                    </List>
+                    <FlatList
+                        data={this.state.dataSource}
+                        extraData={this.state}
+                        keyExtractor={this._keyExtractor}
+                        renderItem={this._renderItem}
+                    />
                 </Content>
             </Container>
+        );
+    }
+}
+
+class MyListItem extends React.PureComponent {
+    _onPress = () => {
+        this.props.onPressItem(this.props.id);
+        alert(this.props.title);
+    };
+
+    render() {
+        const textColor = this.props.selected ? "red" : "black";
+        return (
+            <TouchableHighlight onPress={this._onPress}>
+                <View style={{borderBottomWidth:1}}>
+                    <Text style={{ color: 'black' }}>
+                        {this.props.title}
+                    </Text>
+                    <Text style={{ color: 'black' }}>
+                        {this.props.titleEN}
+                    </Text>
+                </View>
+            </TouchableHighlight>
         );
     }
 }

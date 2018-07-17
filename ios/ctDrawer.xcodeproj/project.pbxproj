@@ -52,6 +52,7 @@
 		167C388AA6E1482182023089 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58D72A0C32D24F8E9C495C6F /* Zocial.ttf */; };
 		3D416A450B214442A43C8535 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DE9C166E2F647F8BE717E87 /* libAirMaps.a */; };
 		2D25BBA00156499085E195E6 /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CCD21D92D6442D697ED9F5D /* libSQLite.a */; };
+		B41474AA5DBB46F9AFBB8B95 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 923CC65B40F2433B8A3104F4 /* Feather.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -374,6 +375,7 @@
 		6DE9C166E2F647F8BE717E87 /* libAirMaps.a */ = {isa = PBXFileReference; name = "libAirMaps.a"; path = "libAirMaps.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		0344C4411757498A87AC8E43 /* SQLite.xcodeproj */ = {isa = PBXFileReference; name = "SQLite.xcodeproj"; path = "../node_modules/react-native-sqlite-storage/src/ios/SQLite.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		2CCD21D92D6442D697ED9F5D /* libSQLite.a */ = {isa = PBXFileReference; name = "libSQLite.a"; path = "libSQLite.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		923CC65B40F2433B8A3104F4 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -656,6 +658,7 @@
 				D2170AB78C7848F4AED89B13 /* rubicon-icon-font.ttf */,
 				EE5426943874488A9FDAB482 /* SimpleLineIcons.ttf */,
 				58D72A0C32D24F8E9C495C6F /* Zocial.ttf */,
+				923CC65B40F2433B8A3104F4 /* Feather.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1120,6 +1123,7 @@
 				D2C9CC50CC9E42BD9C84F5ED /* rubicon-icon-font.ttf in Resources */,
 				FC18EA0EFC674896B5C745F4 /* SimpleLineIcons.ttf in Resources */,
 				167C388AA6E1482182023089 /* Zocial.ttf in Resources */,
+				B41474AA5DBB46F9AFBB8B95 /* Feather.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
