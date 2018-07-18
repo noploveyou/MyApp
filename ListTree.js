@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { Container, Header, Left, Body, Right, Button, Icon, Title ,
          Content, Text, icon ,View,Input,Item} from 'native-base';
 import { FlatList, ActivityIndicator,TouchableHighlight} from 'react-native';
-import axios from 'axios';
 
 export default class Page2 extends Component {
+    componentDidMount(){
+        this.SearchDataSource('');
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -12,21 +15,6 @@ export default class Page2 extends Component {
             selected: (new Map(): Map<string, boolean>),
             isLoading: true,
         };
-    }
-
-    componentDidMount(){
-         axios.get('http://192.168.1.22/DBCheck.php')
-            .then((response) => {
-                this.setState({
-                   dataSource: response.data,
-                   isLoading: false,
-               });
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-
     }
 
     _keyExtractor = (item,index) => item.plantID;
@@ -54,11 +42,42 @@ export default class Page2 extends Component {
     };
 
     clearText(){
-        this.setState({text:''})
+        this.setState({text:''});
+        this.componentDidMount();
+    }
+
+    SearchDataSource (value) {
+        fetch('http://192.168.1.22/DBCheck.php', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    plantName: value
+                })
+            }
+        )
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    isLoading: false,
+                    dataSource: responseJson
+                }, function(){
+
+                });
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            });
+
+        this.setState({text: value})
     }
 
     render() {
         if(this.state.isLoading){
+            /*setTimeout(function(){ alert("Hello"); }, 3000);*/
             return(
                 <View style={{flex: 1, alignItems:'center',flexDirection:'row',justifyContent:'center'}}>
                     <View>
@@ -66,6 +85,7 @@ export default class Page2 extends Component {
                         <Text style={{fontSize:30}}> กำลังโหลด กรุณารอสักครู่ </Text>
                     </View>
                 </View>
+
             )
         }
         return (
@@ -87,7 +107,8 @@ export default class Page2 extends Component {
                             <Input placeholder= "Search In Here"
                                    placeholderTextColor = '#D5D8DC'
                                    returnKeyType={"done"}
-                                   onChangeText={(value) => {this.setState({text: value})}}
+                                   onChangeText={(value) => {this.SearchDataSource(value)}}
+                                   /*this.SearchDataSource(value*/
                                    value={this.state.text}
                             />
                         </View>
